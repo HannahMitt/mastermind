@@ -7,10 +7,25 @@
 //
 
 #import "MMMGameRow.h"
+#import "MMMRowData.h"
 
 static int const BUTTON_DIAMETER = 30;
 static int const BUTTON_SPACING = 20;
 static int const DOT_DIAMETER = 10;
+
+@interface MMMGameRow()
+
+@property (nonatomic, strong) UIView *dot1;
+@property (nonatomic, strong) UIView *dot2;
+@property (nonatomic, strong) UIView *dot3;
+@property (nonatomic, strong) UIView *dot4;
+
+@property (nonatomic, strong) UIButton *peg1;
+@property (nonatomic, strong) UIButton *peg2;
+@property (nonatomic, strong) UIButton *peg3;
+@property (nonatomic, strong) UIButton *peg4;
+
+@end
 
 @implementation MMMGameRow
 
@@ -39,18 +54,22 @@ static int const DOT_DIAMETER = 10;
         CGRect pegRect = CGRectMake(86, 7, BUTTON_DIAMETER, BUTTON_DIAMETER);
         
         self.peg1 = [self pegMadeWithRect:pegRect];
+        [self.peg1 addTarget:self action:@selector(pegPressed:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.peg1];
         
         pegRect.origin.x += BUTTON_DIAMETER + BUTTON_SPACING;
         self.peg2 = [self pegMadeWithRect:pegRect];
+        [self.peg2 addTarget:self action:@selector(pegPressed:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.peg2];
         
         pegRect.origin.x += BUTTON_DIAMETER + BUTTON_SPACING;
         self.peg3 = [self pegMadeWithRect:pegRect];
+        [self.peg3 addTarget:self action:@selector(pegPressed:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.peg3];
         
         pegRect.origin.x += BUTTON_DIAMETER + BUTTON_SPACING;
         self.peg4 = [self pegMadeWithRect:pegRect];
+        [self.peg4 addTarget:self action:@selector(pegPressed:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.peg4];
     }
     return self;
@@ -72,6 +91,30 @@ static int const DOT_DIAMETER = 10;
     peg.layer.borderWidth = 2;
     peg.layer.borderColor = [UIColor whiteColor].CGColor;
     return peg;
+}
+
+- (void)setRowData:(MMMRowData *)rowData
+{
+    _rowData = rowData;
+    self.peg1.backgroundColor = [self.rowData getUIColorforColumn:0];
+    self.peg2.backgroundColor = [self.rowData getUIColorforColumn:1];
+    self.peg3.backgroundColor = [self.rowData getUIColorforColumn:2];
+    self.peg4.backgroundColor = [self.rowData getUIColorforColumn:3];
+}
+
+- (void)pegPressed:(UIButton *)button
+{
+    if(self.rowData){
+        button.backgroundColor = [UIColor redColor];
+        
+        int column;
+        if (button == self.peg1) column = 0;
+        else if (button == self.peg2) column = 1;
+        else if (button == self.peg3) column = 2;
+        else column = 3;
+        
+        [self.rowData setUIColor:[UIColor redColor] forColumn:column];
+    }
 }
 
 @end

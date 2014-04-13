@@ -8,6 +8,7 @@
 
 #import "MMMGameTable.h"
 #import "MMMGameRow.h"
+#import "MMMRowData.h"
 
 static int const BUTTON_DIAMETER = 30;
 
@@ -21,6 +22,7 @@ static int const BUTTON_DIAMETER = 30;
 @property (nonatomic, strong) UIButton *yellowButton;
 
 @property (nonatomic, strong) UIColor *currentColor;
+@property (nonatomic, strong) NSMutableArray *gameRows;
 
 @end
 
@@ -29,7 +31,14 @@ static int const BUTTON_DIAMETER = 30;
 - (id)init {
     self = [super init];
     if (self){
+        self.gameRows = [[NSMutableArray alloc] init];
+        for (int i = 0; i < 10; i++)
+        {
+            [self.gameRows addObject:[[MMMRowData alloc] init]];
+        }
+        
         self.currentColor = [UIColor grayColor];
+        self.view.backgroundColor = [UIColor lightGrayColor];
     }
     
     return self;
@@ -74,6 +83,13 @@ static int const BUTTON_DIAMETER = 30;
     buttonRect.origin.x += buttonStart;
     self.yellowButton = [self makeButtonChooserWithRect:buttonRect forColor:[UIColor yellowColor]];
     [self.view addSubview:self.yellowButton];
+    
+    [self.redButton addTarget:self action:@selector(colorButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.blueButton addTarget:self action:@selector(colorButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.greenButton addTarget:self action:@selector(colorButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.blackButton addTarget:self action:@selector(colorButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.whiteButton addTarget:self action:@selector(colorButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.yellowButton addTarget:self action:@selector(colorButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (UIButton *)makeButtonChooserWithRect:(CGRect)rect forColor:(UIColor *)color
@@ -86,17 +102,28 @@ static int const BUTTON_DIAMETER = 30;
     return redButton;
 }
 
+- (void)colorButtonPressed:(UIButton *)button
+{
+    self.redButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.blueButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.greenButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.blackButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.whiteButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.yellowButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    
+    button.layer.borderColor = [UIColor darkGrayColor].CGColor;
+    self.currentColor = [UIColor colorWithCGColor:button.layer.backgroundColor];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 10;
+    return [self.gameRows count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MMMGameRow *row = [self.tableView dequeueReusableCellWithIdentifier:@"GameRow" forIndexPath:indexPath];
-    
-    
-    
+    row.rowData = self.gameRows[indexPath.row];
     return row;
 }
 
