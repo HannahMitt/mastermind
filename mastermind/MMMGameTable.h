@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MMMGameTable : UITableView
+@interface MMMGameTable :UIViewController <UITableViewDelegate, UITableViewDataSource>
+
+@property UITableView *tableView;
 
 @end
