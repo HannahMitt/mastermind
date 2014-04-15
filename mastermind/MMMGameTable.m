@@ -9,6 +9,7 @@
 #import "MMMGameTable.h"
 #import "MMMGameRow.h"
 #import "MMMRowData.h"
+#import "MMMColorSingleton.h"
 
 static int const BUTTON_DIAMETER = 30;
 
@@ -21,7 +22,6 @@ static int const BUTTON_DIAMETER = 30;
 @property (nonatomic, strong) UIButton *whiteButton;
 @property (nonatomic, strong) UIButton *yellowButton;
 
-@property (nonatomic, strong) UIColor *currentColor;
 @property (nonatomic, strong) NSMutableArray *gameRows;
 
 @end
@@ -37,7 +37,6 @@ static int const BUTTON_DIAMETER = 30;
             [self.gameRows addObject:[[MMMRowData alloc] init]];
         }
         
-        self.currentColor = [UIColor grayColor];
         self.view.backgroundColor = [UIColor lightGrayColor];
     }
     
@@ -112,7 +111,7 @@ static int const BUTTON_DIAMETER = 30;
     self.yellowButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
     
     button.layer.borderColor = [UIColor darkGrayColor].CGColor;
-    self.currentColor = [UIColor colorWithCGColor:button.layer.backgroundColor];
+    [MMMColorSingleton setColorInstance:[UIColor colorWithCGColor:button.layer.backgroundColor]];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

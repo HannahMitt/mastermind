@@ -8,6 +8,7 @@
 
 #import "MMMGameRow.h"
 #import "MMMRowData.h"
+#import "MMMColorSingleton.h"
 
 static int const BUTTON_DIAMETER = 30;
 static int const BUTTON_SPACING = 20;
@@ -105,7 +106,7 @@ static int const DOT_DIAMETER = 10;
 - (void)pegPressed:(UIButton *)button
 {
     if(self.rowData){
-        button.backgroundColor = [UIColor redColor];
+        button.backgroundColor = [MMMColorSingleton colorInstance];
         
         int column;
         if (button == self.peg1) column = 0;
@@ -113,7 +114,7 @@ static int const DOT_DIAMETER = 10;
         else if (button == self.peg3) column = 2;
         else column = 3;
         
-        [self.rowData setUIColor:[UIColor redColor] forColumn:column];
+        [self.rowData setUIColor:[MMMColorSingleton colorInstance] forColumn:column];
     }
 }
 
