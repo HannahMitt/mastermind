@@ -165,12 +165,29 @@ static int const PEG_NUM = 4;
     }
     
     int currentAssesmentPeg = 0;
+    NSMutableArray *usedPegs = [[NSMutableArray alloc] initWithArray:@[@(0), @(0), @(0), @(0)]];
+    NSMutableArray *usedSolutionPegs = [[NSMutableArray alloc] initWithArray:@[@(0), @(0), @(0), @(0)]];
     
     for (int i = 0; i < PEG_NUM; i++)
     {
         if ([[currentRow getUIColorforColumn:i] isEqual:[self.solution getUIColorforColumn:i]]){
             [currentRow setAssesmentColor:[UIColor blackColor] forColumn:currentAssesmentPeg];
             currentAssesmentPeg++;
+            usedPegs[i] = @(1);
+            usedSolutionPegs[i] = @(1);
+        }
+    }
+    
+    for (int i = 0; i < PEG_NUM; i++)
+    {
+        for (int k = 0; k < PEG_NUM; k++)
+        {
+            if ([usedPegs[i] integerValue] == 0 && [usedSolutionPegs[k] integerValue] == 0 && ([[currentRow getUIColorforColumn:i] isEqual:[self.solution getUIColorforColumn:k]])){
+                [currentRow setAssesmentColor:[UIColor whiteColor] forColumn:currentAssesmentPeg];
+                currentAssesmentPeg++;
+                usedPegs[i] = @(1);
+                usedSolutionPegs[k] = @(1);
+            }
         }
     }
     
