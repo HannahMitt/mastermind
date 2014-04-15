@@ -102,6 +102,11 @@ static int const DOT_DIAMETER = 10;
     self.peg2.backgroundColor = [self.rowData getUIColorforColumn:1];
     self.peg3.backgroundColor = [self.rowData getUIColorforColumn:2];
     self.peg4.backgroundColor = [self.rowData getUIColorforColumn:3];
+    
+    self.dot1.backgroundColor = [self.rowData getAssesmentColorforColumn:0];
+    self.dot2.backgroundColor = [self.rowData getAssesmentColorforColumn:1];
+    self.dot3.backgroundColor = [self.rowData getAssesmentColorforColumn:2];
+    self.dot4.backgroundColor = [self.rowData getAssesmentColorforColumn:3];
 }
 
 - (void)setIsEdittingRow:(BOOL)isEdittingRow

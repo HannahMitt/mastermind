@@ -12,5 +12,7 @@
 
 - (void)setUIColor:(UIColor *)color forColumn:(int) column;
 - (UIColor *)getUIColorforColumn:(int) column;
+- (void)setAssesmentColor:(UIColor *)color forColumn:(int) column;
+- (UIColor *)getAssesmentColorforColumn:(int) column;
 
 @end

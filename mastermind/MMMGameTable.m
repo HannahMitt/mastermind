@@ -13,6 +13,7 @@
 
 static int const BUTTON_DIAMETER = 30;
 static int const GAME_ROWS = 10;
+static int const PEG_NUM = 4;
 
 @interface MMMGameTable ()
 
@@ -24,6 +25,7 @@ static int const GAME_ROWS = 10;
 @property (nonatomic, strong) UIButton *yellowButton;
 @property (nonatomic, strong) UIButton *doneButton;
 
+@property (nonatomic, strong) MMMRowData *solution;
 @property (nonatomic, strong) NSMutableArray *gameRows;
 @property (nonatomic) int currentEdittingRow;
 
@@ -34,6 +36,12 @@ static int const GAME_ROWS = 10;
 - (id)init {
     self = [super init];
     if (self){
+        self.solution = [[MMMRowData alloc] init];
+        for (int k = 0; k < PEG_NUM; k++) {
+            [self.solution setUIColor:[self getRandomColor] forColumn:k];
+        }
+        
+        
         self.gameRows = [[NSMutableArray alloc] init];
         for (int i = 0; i < GAME_ROWS; i++)
         {
@@ -46,6 +54,24 @@ static int const GAME_ROWS = 10;
     }
     
     return self;
+}
+
+- (UIColor *)getRandomColor
+{
+    int colorInt = arc4random() % 6;
+    if (colorInt == 0) {
+        return [UIColor redColor];
+    } else if (colorInt == 1) {
+        return [UIColor blueColor];
+    } else if (colorInt == 2) {
+        return [UIColor greenColor];
+    } else if (colorInt == 3) {
+        return [UIColor blackColor];
+    } else if (colorInt == 4) {
+        return [UIColor whiteColor];
+    } else {
+        return [UIColor yellowColor];
+    }
 }
 
 - (void)viewDidLoad
@@ -131,13 +157,22 @@ static int const GAME_ROWS = 10;
 - (void)doneButtonPressed:(UIButton *)button
 {
     MMMRowData *currentRow = self.gameRows[self.currentEdittingRow];
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < PEG_NUM; i++)
     {
-        if ([currentRow getUIColorforColumn:i] == [UIColor grayColor]){
+        if ([[currentRow getUIColorforColumn:i] isEqual:[UIColor grayColor]]){
             return;
         }
     }
     
+    int currentAssesmentPeg = 0;
+    
+    for (int i = 0; i < PEG_NUM; i++)
+    {
+        if ([[currentRow getUIColorforColumn:i] isEqual:[self.solution getUIColorforColumn:i]]){
+            [currentRow setAssesmentColor:[UIColor blackColor] forColumn:currentAssesmentPeg];
+            currentAssesmentPeg++;
+        }
+    }
     
     self.currentEdittingRow--;
     [self.tableView reloadData];
@@ -151,6 +186,7 @@ static int const GAME_ROWS = 10;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MMMGameRow *row = [self.tableView dequeueReusableCellWithIdentifier:@"GameRow" forIndexPath:indexPath];
+    row.selectionStyle = UITableViewCellSelectionStyleNone;
     row.rowData = self.gameRows[indexPath.row];
     row.isEdittingRow = (indexPath.row == self.currentEdittingRow);
     return row;

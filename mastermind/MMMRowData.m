@@ -10,6 +10,7 @@
 
 @interface MMMRowData()
 @property (nonatomic, strong) NSMutableArray *pegs;
+@property (nonatomic, strong) NSMutableArray *assesment;
 @end
 
 @implementation MMMRowData
@@ -18,6 +19,8 @@
     self = [super init];
     if (self){
         self.pegs = [[NSMutableArray alloc] initWithArray:@[[UIColor grayColor], [UIColor grayColor], [UIColor grayColor], [UIColor grayColor]]];
+        
+        self.assesment = [[NSMutableArray alloc] initWithArray:@[[UIColor grayColor], [UIColor grayColor], [UIColor grayColor], [UIColor grayColor]]];
     }
     return self;
 }
@@ -30,6 +33,16 @@
 - (UIColor *)getUIColorforColumn:(int)column
 {
     return self.pegs[column];
+}
+
+- (void)setAssesmentColor:(UIColor *)color forColumn:(int)column
+{
+    self.assesment[column] = color;
+}
+
+- (UIColor *)getAssesmentColorforColumn:(int)column
+{
+    return self.assesment[column];
 }
 
 @end
