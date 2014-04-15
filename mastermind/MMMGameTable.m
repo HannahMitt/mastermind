@@ -12,6 +12,7 @@
 #import "MMMColorSingleton.h"
 
 static int const BUTTON_DIAMETER = 30;
+static int const GAME_ROWS = 10;
 
 @interface MMMGameTable ()
 
@@ -21,8 +22,10 @@ static int const BUTTON_DIAMETER = 30;
 @property (nonatomic, strong) UIButton *blackButton;
 @property (nonatomic, strong) UIButton *whiteButton;
 @property (nonatomic, strong) UIButton *yellowButton;
+@property (nonatomic, strong) UIButton *doneButton;
 
 @property (nonatomic, strong) NSMutableArray *gameRows;
+@property (nonatomic) int currentEdittingRow;
 
 @end
 
@@ -32,12 +35,14 @@ static int const BUTTON_DIAMETER = 30;
     self = [super init];
     if (self){
         self.gameRows = [[NSMutableArray alloc] init];
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < GAME_ROWS; i++)
         {
             [self.gameRows addObject:[[MMMRowData alloc] init]];
         }
         
-        self.view.backgroundColor = [UIColor lightGrayColor];
+        self.currentEdittingRow = [self.gameRows count] - 1;
+        
+        self.view.backgroundColor = [UIColor whiteColor];
     }
     
     return self;
@@ -57,7 +62,7 @@ static int const BUTTON_DIAMETER = 30;
     
     [self.tableView registerClass:[MMMGameRow class] forCellReuseIdentifier:@"GameRow"];
     
-    int buttonStart = self.view.frame.size.width / 7;
+    int buttonStart = self.view.frame.size.width / 8;
     CGRect buttonRect = CGRectMake(buttonStart - (BUTTON_DIAMETER / 2.0), bottomRow + 5, BUTTON_DIAMETER, BUTTON_DIAMETER);
     
     self.redButton = [self makeButtonChooserWithRect:buttonRect forColor:[UIColor redColor]];
@@ -89,6 +94,15 @@ static int const BUTTON_DIAMETER = 30;
     [self.blackButton addTarget:self action:@selector(colorButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.whiteButton addTarget:self action:@selector(colorButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.yellowButton addTarget:self action:@selector(colorButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    buttonRect.origin.x += buttonStart;
+    buttonRect.size.width = BUTTON_DIAMETER * 1.6;
+    self.doneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.doneButton setFrame:buttonRect];
+    [self.doneButton setTitle:@"Done" forState:UIControlStateNormal];
+    [self.view addSubview:self.doneButton];
+    [self.doneButton addTarget:self action:@selector(doneButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    
 }
 
 - (UIButton *)makeButtonChooserWithRect:(CGRect)rect forColor:(UIColor *)color
@@ -114,6 +128,21 @@ static int const BUTTON_DIAMETER = 30;
     [MMMColorSingleton setColorInstance:[UIColor colorWithCGColor:button.layer.backgroundColor]];
 }
 
+- (void)doneButtonPressed:(UIButton *)button
+{
+    MMMRowData *currentRow = self.gameRows[self.currentEdittingRow];
+    for (int i = 0; i < 4; i++)
+    {
+        if ([currentRow getUIColorforColumn:i] == [UIColor grayColor]){
+            return;
+        }
+    }
+    
+    
+    self.currentEdittingRow--;
+    [self.tableView reloadData];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [self.gameRows count];
@@ -123,6 +152,7 @@ static int const BUTTON_DIAMETER = 30;
 {
     MMMGameRow *row = [self.tableView dequeueReusableCellWithIdentifier:@"GameRow" forIndexPath:indexPath];
     row.rowData = self.gameRows[indexPath.row];
+    row.isEdittingRow = (indexPath.row == self.currentEdittingRow);
     return row;
 }
 

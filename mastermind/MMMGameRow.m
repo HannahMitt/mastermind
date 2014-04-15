@@ -35,6 +35,7 @@ static int const DOT_DIAMETER = 10;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.backgroundColor = [UIColor clearColor];
+        self.isEdittingRow = false;
         
         CGRect dotRect = CGRectMake(20, 7, DOT_DIAMETER, DOT_DIAMETER);
         self.dot1 = [self dotMadeWithRect:dotRect];
@@ -103,9 +104,20 @@ static int const DOT_DIAMETER = 10;
     self.peg4.backgroundColor = [self.rowData getUIColorforColumn:3];
 }
 
+- (void)setIsEdittingRow:(BOOL)isEdittingRow
+{
+    _isEdittingRow = isEdittingRow;
+    
+    if (self.isEdittingRow){
+        self.backgroundColor = [UIColor lightGrayColor];
+    } else {
+        self.backgroundColor = [UIColor clearColor];
+    }
+}
+
 - (void)pegPressed:(UIButton *)button
 {
-    if(self.rowData){
+    if(self.rowData && self.isEdittingRow){
         button.backgroundColor = [MMMColorSingleton colorInstance];
         
         int column;
