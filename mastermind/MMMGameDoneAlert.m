@@ -8,14 +8,7 @@
 
 #import "MMMGameDoneAlert.h"
 
-static int const BUTTON_DIAMETER = 30;
-
 @interface MMMGameDoneAlert()
-
-@property (nonatomic, strong) UIButton *peg1;
-@property (nonatomic, strong) UIButton *peg2;
-@property (nonatomic, strong) UIButton *peg3;
-@property (nonatomic, strong) UIButton *peg4;
 
 @end
 
@@ -27,20 +20,10 @@ static int const BUTTON_DIAMETER = 30;
     
     if (self)
     {
-        CGRect rect = CGRectMake(0, 0, BUTTON_DIAMETER, BUTTON_DIAMETER);
-        self.peg1 = [self pegMadeWithRect:rect];
-        [self.window addSubview:self.peg1];
+        //Apparently custom views can't be added to alerts in iOS 7
     }
     
     return self;
-}
-
-- (UIButton *)pegMadeWithRect:(CGRect) rect
-{
-    UIButton *peg = [[UIButton alloc] initWithFrame:rect];
-    peg.backgroundColor = [UIColor redColor];
-    peg.layer.cornerRadius = BUTTON_DIAMETER / 2.0;
-    return peg;
 }
 
 @end
