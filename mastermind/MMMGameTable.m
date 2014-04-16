@@ -10,12 +10,13 @@
 #import "MMMGameRow.h"
 #import "MMMRowData.h"
 #import "MMMColorSingleton.h"
+#import "MMMGameDoneAlert.h"
 
 static int const BUTTON_DIAMETER = 30;
 static int const GAME_ROWS = 10;
 static int const PEG_NUM = 4;
 
-@interface MMMGameTable ()
+@interface MMMGameTable () <UIAlertViewDelegate>
 
 @property (nonatomic, strong) UIButton *redButton;
 @property (nonatomic, strong) UIButton *blueButton;
@@ -37,10 +38,7 @@ static int const PEG_NUM = 4;
     self = [super init];
     if (self){
         self.solution = [[MMMRowData alloc] init];
-        for (int k = 0; k < PEG_NUM; k++) {
-            [self.solution setUIColor:[self getRandomColor] forColumn:k];
-        }
-        
+        [self generateSolution];
         
         self.gameRows = [[NSMutableArray alloc] init];
         for (int i = 0; i < GAME_ROWS; i++)
@@ -54,6 +52,13 @@ static int const PEG_NUM = 4;
     }
     
     return self;
+}
+
+- (void) generateSolution
+{
+    for (int k = 0; k < PEG_NUM; k++) {
+        [self.solution setUIColor:[self getRandomColor] forColumn:k];
+    }
 }
 
 - (UIColor *)getRandomColor
@@ -180,13 +185,8 @@ static int const PEG_NUM = 4;
     
     if (currentAssesmentPeg == 4)
     {
-        MMMGameDoneAlert *alert = [[MMMGameDoneAlert alloc] initWithTitle:@"Nice!"
-                                                        message:@"You are a super hacker of small colored pegs. Good game."
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        alert.solution = self.solution;
-        [alert show];
+        [self gameSolved];
+        return;
     }
     
     for (int i = 0; i < PEG_NUM; i++)
@@ -203,7 +203,51 @@ static int const PEG_NUM = 4;
     }
     
     self.currentEdittingRow--;
+    
+    if (self.currentEdittingRow < 0) {
+        [self gameOver];
+        return;
+    }
+    
     [self.tableView reloadData];
+}
+
+- (void)gameSolved
+{
+    MMMGameDoneAlert *alert = [[MMMGameDoneAlert alloc] initWithTitle:@"Nice!"
+                                                              message:@"You are a super hacker of small colored pegs. Good game."
+                                                             delegate:self
+                                                    cancelButtonTitle:@"New Game"
+                                                    otherButtonTitles:nil];
+    alert.solution = self.solution;
+    [alert show];
+}
+
+- (void)gameOver
+{
+    MMMGameDoneAlert *alert = [[MMMGameDoneAlert alloc] initWithTitle:@"Oh. You failed."
+                                                              message:@"The forces of chaotic color won."
+                                                             delegate:self
+                                                    cancelButtonTitle:@"New Game"
+                                                    otherButtonTitles:nil];
+    alert.solution = self.solution;
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [self generateSolution];
+    [self clearGameRows];
+    self.currentEdittingRow = GAME_ROWS - 1;
+    [self.tableView reloadData];
+}
+
+- (void) clearGameRows
+{
+    for (int i = 0; i < GAME_ROWS; i++)
+    {
+        self.gameRows[i] = [[MMMRowData alloc] init];
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
