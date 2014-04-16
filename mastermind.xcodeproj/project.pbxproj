@@ -23,6 +23,7 @@
 		89FBEAE218FB208F007F4E88 /* MMMGameTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 89FBEAE118FB208F007F4E88 /* MMMGameTable.m */; };
 		89FBEAE518FB47C5007F4E88 /* MMMRowData.m in Sources */ = {isa = PBXBuildFile; fileRef = 89FBEAE418FB47C5007F4E88 /* MMMRowData.m */; };
 		89FBEAE818FD059B007F4E88 /* MMMColorSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 89FBEAE718FD059B007F4E88 /* MMMColorSingleton.m */; };
+		89FBEAEE18FE1524007F4E88 /* MMMGameDoneAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 89FBEAED18FE1524007F4E88 /* MMMGameDoneAlert.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,8 @@
 		89FBEAE418FB47C5007F4E88 /* MMMRowData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMMRowData.m; sourceTree = "<group>"; };
 		89FBEAE618FD059B007F4E88 /* MMMColorSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMMColorSingleton.h; sourceTree = "<group>"; };
 		89FBEAE718FD059B007F4E88 /* MMMColorSingleton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMMColorSingleton.m; sourceTree = "<group>"; };
+		89FBEAEC18FE1524007F4E88 /* MMMGameDoneAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMMGameDoneAlert.h; sourceTree = "<group>"; };
+		89FBEAED18FE1524007F4E88 /* MMMGameDoneAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMMGameDoneAlert.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +134,8 @@
 				89FBEAA918FB1A97007F4E88 /* Supporting Files */,
 				89FBEAE618FD059B007F4E88 /* MMMColorSingleton.h */,
 				89FBEAE718FD059B007F4E88 /* MMMColorSingleton.m */,
+				89FBEAEC18FE1524007F4E88 /* MMMGameDoneAlert.h */,
+				89FBEAED18FE1524007F4E88 /* MMMGameDoneAlert.m */,
 			);
 			path = mastermind;
 			sourceTree = "<group>";
@@ -263,6 +268,7 @@
 				89FBEAB318FB1A97007F4E88 /* MMMAppDelegate.m in Sources */,
 				89FBEAAF18FB1A97007F4E88 /* main.m in Sources */,
 				89FBEAE218FB208F007F4E88 /* MMMGameTable.m in Sources */,
+				89FBEAEE18FE1524007F4E88 /* MMMGameDoneAlert.m in Sources */,
 				89FBEAE818FD059B007F4E88 /* MMMColorSingleton.m in Sources */,
 				89FBEAE518FB47C5007F4E88 /* MMMRowData.m in Sources */,
 				89FBEADE18FB1C73007F4E88 /* MMMGameRow.m in Sources */,

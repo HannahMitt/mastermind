@@ -178,6 +178,17 @@ static int const PEG_NUM = 4;
         }
     }
     
+    if (currentAssesmentPeg == 4)
+    {
+        MMMGameDoneAlert *alert = [[MMMGameDoneAlert alloc] initWithTitle:@"Nice!"
+                                                        message:@"You are a super hacker of small colored pegs. Good game."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        alert.solution = self.solution;
+        [alert show];
+    }
+    
     for (int i = 0; i < PEG_NUM; i++)
     {
         for (int k = 0; k < PEG_NUM; k++)
